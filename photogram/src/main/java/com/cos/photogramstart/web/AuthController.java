@@ -12,8 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.auth.SignupDto;
 
@@ -52,27 +54,28 @@ public class AuthController {
 	// 회원가입 버튼 X -> csrf 토큰 활성화 때문임
 	@PostMapping("/auth/signup")
 	public String signup(@Valid SignupDto signupDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
-		
+		// @Controller로 등록해놔도 @ResponseBody이면 파일이 아닌 데이터 리턴함
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errorMap = new HashMap<>();
 			
 			for(FieldError error : bindingResult.getFieldErrors()) {
 				errorMap.put(error.getField(), error.getDefaultMessage());
-				System.out.println(error.getDefaultMessage());
+				
 			}
+			throw new CustomValidationException("유효성 검사 실패", errorMap);
 		}
+		else {
+			log.info(signupDto.toString());
+			// User <- SignupDto에 있는 데이터 넣기
 		
-		
-		log.info(signupDto.toString());
-		// User <- SignupDto에 있는 데이터 넣기
-		
-		User user = signupDto.toEntity();
-		log.info(user.toString());
-		
-		User userEntity = authService.회원가입(user);
-		System.out.println(userEntity);
-		
-		return "auth/signin";
+			User user = signupDto.toEntity();
+			log.info(user.toString());
+			
+			User userEntity = authService.회원가입(user);
+			System.out.println(userEntity);
+			
+			return "auth/signin";
+		}
 	}
 	
 }

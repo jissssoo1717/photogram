@@ -2,6 +2,7 @@ package com.cos.photogramstart.web.dto.auth;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.cos.photogramstart.domain.user.User;
 
@@ -11,7 +12,10 @@ import lombok.Data;
 public class SignupDto {
 	// Request dto
 	
-	@Max(20)
+	
+	// Front-end 뿐만 아니라 Back-end 에서도 막아야함 
+	@Size(min = 2, max = 20)
+	@NotBlank
 	private String username;
 	@NotBlank
 	private String password;
