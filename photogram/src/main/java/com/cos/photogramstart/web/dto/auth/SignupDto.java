@@ -12,6 +12,13 @@ import lombok.Data;
 public class SignupDto {
 	// Request dto
 	
+	/*
+	 * DTO(Data Transfer Object)
+	 *  => 계층 간 데이터 교환을 하기 위해 사용하는 객체
+	 *  	  로직을 가지지 X, 순수한 데이터 객체(getter&setter만 가진 클래스)
+	 *  	  해당 DTO를 받은 서버가 DAO를 이용하여 데이터베이스로 데이터 집어넣음
+	 */
+	
 	
 	// Front-end 뿐만 아니라 Back-end 에서도 막아야함 
 	@Size(min = 2, max = 20)
