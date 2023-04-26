@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
-			.loginPage("/auth/signin")
+			.loginPage("/auth/signin") // GET
+			.loginProcessingUrl("/auth/signin") // POST
 			.defaultSuccessUrl("/");
 	}
 }
