@@ -14,8 +14,14 @@ public class UserUpdateDto {
 	private String phone;
 	private String gender;
 	
-	// 필수가 아닌 항목들 존재 => 위험함
+	// 조금 위험함
 	public User toEntity() {
+		
+		/* 필수 항목 기재 X => 문제 발생
+		 * 
+		 * Validation 체크해줘야함
+		 * 
+		 * */
 		
 		return User.builder()
 				.name(name)
