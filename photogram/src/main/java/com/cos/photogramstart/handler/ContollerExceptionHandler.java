@@ -1,11 +1,12 @@
 package com.cos.photogramstart.handler;
 
-import java.util.Map;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.util.Script;
 import com.cos.photogramstart.web.dto.auth.CMRespDto;
@@ -22,6 +23,13 @@ public class ContollerExceptionHandler {
 		// 1. 클라이언트에게 응답할 때에는 Script가 좋다. -> 브라우저가 응답받기 때문
 		// 2. Ajax 통신 -> CMRespDto
 		// 3. Android 통신 -> CMRespDto
-		return Script.back(e.getErrorMap().toString());
+		
+		return Script.back(e.getErrorMap().toString()); // JavaScript 응답
+	}
+	
+	@ExceptionHandler(CustomValidationApiException.class)
+	public ResponseEntity<?> validationApiException(CustomValidationApiException e) {
+
+		return new ResponseEntity<>(new CMRespDto<>(-1, e.getMessage(), e.getErrorMap()), HttpStatus.BAD_REQUEST); // Data 응답
 	}
 }
