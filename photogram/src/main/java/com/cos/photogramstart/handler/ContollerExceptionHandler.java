@@ -25,7 +25,12 @@ public class ContollerExceptionHandler {
 		// 2. Ajax 통신 -> CMRespDto
 		// 3. Android 통신 -> CMRespDto
 		
-		return Script.back(e.getErrorMap().toString()); // JavaScript 응답
+		if(e.getErrorMap() == null) {
+			return Script.back(e.getMessage());
+		}
+		else {
+			return Script.back(e.getErrorMap().toString()); // JavaScript 응답
+		}
 	}
 	
 	@ExceptionHandler(CustomValidationApiException.class)
