@@ -1,13 +1,18 @@
 package com.cos.photogramstart.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+
+import com.cos.photogramstart.domain.image.Image;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +50,14 @@ public class User {
 	
 	private String profileImageUrl; // 사진
 	private String role; // 권한
+	
+	
+	// 연관관계의 주인 아님 => 테이블에 Column 만들지 X
+	// User SELECT할 때 해당 User id로 등록된 image들 다 가져옴
+	// LAZY = User를 Select할 때 해당 User id로 등록된 image들을 무조건 가져오지 X => 대신 getImages() 함수의 image들이 호출될 때 가져오는것
+	// Eager = User를 Select할 때 해당 User id로 등록된 image들을 전부 join해서 가져옴
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Image> images; // 양방향 매핑
 	
 	
 	private LocalDateTime createDate;

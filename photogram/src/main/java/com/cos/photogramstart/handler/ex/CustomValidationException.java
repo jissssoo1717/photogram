@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class CustomValidationException extends RuntimeException {
 
-	
 	// 객체를 구분할 때
 	private static final long serialVersionUID = 1L;
 
@@ -18,6 +17,5 @@ public class CustomValidationException extends RuntimeException {
 	public Map<String, String> getErrorMap() {
 		return errorMap;
 	}
-
 
 }
