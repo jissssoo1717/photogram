@@ -18,13 +18,20 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public User 회원프로필(int userId) {
+	@Transactional(readOnly = true)
+	public User 회원프로필(int pageUserId, int principalId) {
+		UserProfileDto dto = new UserProfileDto(); 
+		
 		// SELECT * FROM image WHERE userId = :userId;
-		User userEntity = userRepository.findById(userId).orElseThrow(()-> {
+		User userEntity = userRepository.findById(pageUserId).orElseThrow(()-> {
 			throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
 		});
 		
-		return userEntity;
+		dto.setUser();
+		dto.setPageOwnerState(pageUserId == principalId);
+		dto.setImageCount(userEntity.getImages().size());
+		
+		return dto;
 	}
 	
 	@Transactional
