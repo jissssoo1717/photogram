@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import com.cos.photogramstart.domain.image.Image;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,6 +58,7 @@ public class User {
 	// LAZY = User를 Select할 때 해당 User id로 등록된 image들을 무조건 가져오지 X => 대신 getImages() 함수의 image들이 호출될 때 가져오는것
 	// Eager = User를 Select할 때 해당 User id로 등록된 image들을 전부 join해서 가져옴
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"user"}) // Image 내부의 user의 getter 호출 막는다
 	private List<Image> images; // 양방향 매핑
 	
 	
